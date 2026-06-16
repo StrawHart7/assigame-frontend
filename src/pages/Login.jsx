@@ -8,64 +8,106 @@ export default function Login() {
   const navigate = useNavigate()
   const [form, setForm] = useState({ email: '', motdepasse: '' })
   const [erreur, setErreur] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-  }
+  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault()
     setErreur('')
+    setLoading(true)
     try {
       const res = await api.post('/auth/login', form)
       login(res.data)
       navigate('/')
     } catch (err) {
       setErreur(err.response?.data?.erreur || 'Erreur de connexion')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6 text-blue-600">Connexion</h2>
+    <div style={{
+      minHeight: '100vh', background: '#0A0A0F',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '24px',
+    }}>
+      <div style={{ width: '100%', maxWidth: '420px' }}>
 
-        {erreur && (
-          <div className="bg-red-100 text-red-600 px-4 py-2 rounded mb-4 text-sm">
-            {erreur}
-          </div>
-        )}
+        {/* Logo */}
+        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <span style={{ fontFamily: 'Syne, sans-serif', fontSize: '32px', fontWeight: 800, color: '#F0EDE8' }}>
+              Assi<span style={{ color: '#F5A623' }}>game</span>
+            </span>
+          </Link>
+          <p style={{ color: '#6B7280', fontSize: '14px', marginTop: '8px' }}>Connectez-vous à votre compte</p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-            className="border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <input
-            type="password"
-            name="motdepasse"
-            placeholder="Mot de passe"
-            value={form.motdepasse}
-            onChange={handleChange}
-            required
-            className="border rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          />
-          <button
-            type="submit"
-            className="bg-blue-600 text-white py-2 rounded hover:bg-blue-700 font-semibold"
-          >
-            Se connecter
-          </button>
-        </form>
+        <div style={{
+          background: '#1A1A2E',
+          border: '1px solid rgba(245,166,35,0.15)',
+          borderRadius: '20px', padding: '36px',
+        }}>
+          {erreur && (
+            <div style={{
+              background: 'rgba(239,68,68,0.1)',
+              border: '1px solid rgba(239,68,68,0.3)',
+              color: '#EF4444', padding: '12px 16px',
+              borderRadius: '10px', marginBottom: '20px',
+              fontSize: '13px', fontFamily: 'Inter, sans-serif',
+            }}>
+              {erreur}
+            </div>
+          )}
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            {[
+              { name: 'email', type: 'email', label: 'Email', placeholder: 'votre@email.com' },
+              { name: 'motdepasse', type: 'password', label: 'Mot de passe', placeholder: '••••••••' },
+            ].map(field => (
+              <div key={field.name}>
+                <label style={{
+                  display: 'block', fontSize: '12px', fontWeight: 600,
+                  color: '#9CA3AF', marginBottom: '8px', letterSpacing: '0.5px',
+                }}>
+                  {field.label.toUpperCase()}
+                </label>
+                <input
+                  type={field.type} name={field.name}
+                  placeholder={field.placeholder}
+                  value={form[field.name]}
+                  onChange={handleChange} required
+                  style={{
+                    width: '100%', padding: '12px 16px',
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(245,166,35,0.2)',
+                    borderRadius: '10px', color: '#F0EDE8',
+                    fontSize: '14px', outline: 'none',
+                    fontFamily: 'Inter, sans-serif',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+            ))}
+
+            <button type="submit" disabled={loading} style={{
+              padding: '14px',
+              background: 'linear-gradient(135deg, #F5A623, #e8940f)',
+              color: '#0A0A0F', border: 'none',
+              borderRadius: '10px', fontSize: '15px', fontWeight: 700,
+              fontFamily: 'Syne, sans-serif', cursor: loading ? 'not-allowed' : 'pointer',
+              marginTop: '8px', opacity: loading ? 0.7 : 1,
+            }}>
+              {loading ? 'Connexion...' : 'Se connecter'}
+            </button>
+          </form>
+        </div>
+
+        <p style={{ textAlign: 'center', fontSize: '13px', color: '#6B7280', marginTop: '20px' }}>
           Pas encore de compte ?{' '}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link to="/register" style={{ color: '#F5A623', textDecoration: 'none', fontWeight: 600 }}>
             S'inscrire
           </Link>
         </p>
