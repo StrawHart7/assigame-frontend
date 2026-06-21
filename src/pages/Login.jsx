@@ -39,7 +39,7 @@ export default function Login() {
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
           <Link to="/" style={{ textDecoration: 'none' }}>
             <span style={{ fontFamily: 'Syne, sans-serif', fontSize: '32px', fontWeight: 800, color: '#F0EDE8' }}>
-              Assi<span style={{ color: '#F5A623' }}>game</span>
+              Straw<span style={{ color: '#F5A623' }}>Sell</span>
             </span>
           </Link>
           <p style={{ color: '#6B7280', fontSize: '14px', marginTop: '8px' }}>Connectez-vous à votre compte</p>

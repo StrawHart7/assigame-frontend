@@ -6,6 +6,15 @@
   box-sizing: border-box;
 }
 
+* {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+*::-webkit-scrollbar {
+  display: none; 
+}
+
 :root {
   --bg-primary: #0A0A0F;
   --bg-card: #1A1A2E;

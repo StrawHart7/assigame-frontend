@@ -42,7 +42,7 @@ export default function Navbar() {
             color: '#F0EDE8',
             letterSpacing: '-0.5px',
           }}>
-            Assi<span style={{ color: '#F5A623' }}>game</span>
+            Strawe<span style={{ color: '#F5A623' }}>Sell</span>
           </span>
         </Link>
 
